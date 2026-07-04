@@ -1149,6 +1149,39 @@
             if (el && guestParam) {
                 el.textContent = guestParam.replace(/\+/g, ' ');
             }
+
+            // ── Swipe Gesture (kiri/kanan) ─────────────────────────────────────
+            const TOTAL_SLIDES = 7;
+            const SWIPE_THRESHOLD = 50; // minimal px untuk dianggap swipe
+            let touchStartX = 0;
+            let touchStartY = 0;
+
+            document.addEventListener('touchstart', function (e) {
+                touchStartX = e.touches[0].clientX;
+                touchStartY = e.touches[0].clientY;
+            }, { passive: true });
+
+            document.addEventListener('touchend', function (e) {
+                const coverEl = document.getElementById('slide-cover');
+                // Hanya aktif jika cover sudah disembunyikan
+                if (coverEl && !coverEl.classList.contains('hidden')) return;
+
+                const deltaX = e.changedTouches[0].clientX - touchStartX;
+                const deltaY = e.changedTouches[0].clientY - touchStartY;
+
+                // Abaikan jika lebih banyak scroll vertikal
+                if (Math.abs(deltaY) > Math.abs(deltaX)) return;
+                // Abaikan jika swipe terlalu pendek
+                if (Math.abs(deltaX) < SWIPE_THRESHOLD) return;
+
+                if (deltaX < 0) {
+                    // Swipe ke kiri → slide berikutnya
+                    if (currentSlide < TOTAL_SLIDES) navTo(currentSlide + 1);
+                } else {
+                    // Swipe ke kanan → slide sebelumnya
+                    if (currentSlide > 1) navTo(currentSlide - 1);
+                }
+            }, { passive: true });
         });
     </script>
 </body>
