@@ -9,14 +9,16 @@ let autoplayActive  = false;
 let autoplayTimer   = null;
 
 // ── URL Params (guest name) ──────────────────────────────────────────────────
-(function initGuestName() {
+function initGuestName() {
   const params     = new URLSearchParams(window.location.search);
   const guestParam = params.get('to') || params.get('nama') || params.get('guest');
   const el         = document.getElementById('guestNameDisplay');
   if (el && guestParam) {
-    el.textContent = decodeURIComponent(guestParam.replace(/\+/g, ' '));
+    el.textContent = guestParam.replace(/\+/g, ' ');
   }
-})();
+}
+
+document.addEventListener('DOMContentLoaded', initGuestName);
 
 // ── Cover ────────────────────────────────────────────────────────────────────
 function openInvitation() {

@@ -1140,6 +1140,16 @@
             document.getElementById('slide-' + currentSlide).classList.remove('hidden');
             triggerAnimations('slide-' + currentSlide);
         }
+
+        // ── URL Params: tampilkan nama tamu dari ?to= ──────────────────────────
+        document.addEventListener('DOMContentLoaded', function () {
+            const params     = new URLSearchParams(window.location.search);
+            const guestParam = params.get('to') || params.get('nama') || params.get('guest');
+            const el         = document.getElementById('guestNameDisplay');
+            if (el && guestParam) {
+                el.textContent = guestParam.replace(/\+/g, ' ');
+            }
+        });
     </script>
 </body>
 
